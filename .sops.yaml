@@ -1,0 +1,12 @@
+keys:
+  - &erasmussen age10dkqfhen75hjlv6e8wn9q2usdu546jl7mnwj02xup08rafapxg7qkjlrya
+
+creation_rules:
+  - path_regex: secrets\.enc\.yaml$
+    key_groups:
+      - age:
+          - *erasmussen
+  - path_regex: terraform\.tfstate\.enc\.json$
+    key_groups:
+      - age:
+          - *erasmussen

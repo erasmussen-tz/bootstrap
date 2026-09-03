@@ -2,3 +2,9 @@
 .envrc
 .direnv/
 bin/
+
+# terraform: plaintext state never committed, only terraform.tfstate.enc.json
+terraform/.terraform/
+terraform/terraform.tfstate
+terraform/terraform.tfstate.backup
+pub-key.txt

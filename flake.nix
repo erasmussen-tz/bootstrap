@@ -23,13 +23,34 @@
       imports = [ inputs.treefmt-nix.flakeModule ];
 
       perSystem =
-        { pkgs, ... }:
+        { system, pkgs, ... }:
+        let
+          # terraform and 1password-cli are unfree-licensed; allow them
+          # specifically rather than allowing unfree packages wholesale.
+          unfreePkgs = import inputs.nixpkgs {
+            inherit system;
+            config.allowUnfreePredicate =
+              pkg:
+              builtins.elem (pkg.pname or "") [
+                "terraform"
+                "1password-cli"
+              ];
+          };
+        in
         {
           devShells.default = pkgs.mkShellNoCC {
-            packages = with pkgs; [
-              gnumake
-              nixfmt
-            ];
+            packages =
+              (with pkgs; [
+                gnumake
+                nixfmt
+                sops
+                age
+                ssh-to-age
+              ])
+              ++ (with unfreePkgs; [
+                terraform
+                _1password-cli
+              ]);
           };
 
           treefmt.programs = {

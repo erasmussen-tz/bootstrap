@@ -6,4 +6,8 @@ resource "github_repository" "this" {
   has_issues   = true
   has_projects = var.has_projects
   has_wiki     = false
+
+  allow_merge_commit = false
+  allow_rebase_merge = false
+  allow_squash_merge = true
 }

@@ -1,12 +1,23 @@
 STATE_ENC := terraform.tfstate.enc.json
 STATE_PLAIN := terraform/terraform.tfstate
+PLAN_NAME := tfplan
+PLAN_FILE := terraform/$(PLAN_NAME)
+TF_SOURCES := $(wildcard terraform/*.tf) $(wildcard terraform/modules/*/*.tf)
 
-tf-plan: terraform/.terraform $(if $(wildcard $(STATE_ENC)),$(STATE_PLAIN))
-	sops exec-env secrets.enc.yaml 'terraform -chdir=terraform plan'
+tf-plan: $(PLAN_FILE)
 
-tf-apply: terraform/.terraform $(if $(wildcard $(STATE_ENC)),$(STATE_PLAIN))
-	sops exec-env secrets.enc.yaml 'terraform -chdir=terraform apply'
+tf-apply: $(PLAN_FILE)
+	sops exec-env secrets.enc.yaml 'terraform -chdir=terraform apply $(PLAN_NAME)'
+	rm -f $(PLAN_FILE)
 	$(MAKE) tf-encrypt
+
+# The saved plan file is a file target: only replanned when a .tf source, the
+# local state, or init itself is newer. tf-apply applies exactly this file
+# rather than letting `terraform apply` compute its own plan, so what gets
+# applied is what was reviewed. Consumed (deleted) after a successful apply,
+# so the next tf-plan/tf-apply regenerates a fresh one.
+$(PLAN_FILE): terraform/.terraform $(TF_SOURCES) $(if $(wildcard $(STATE_ENC)),$(STATE_PLAIN))
+	sops exec-env secrets.enc.yaml 'terraform -chdir=terraform plan -out=$(PLAN_NAME)'
 
 # Decrypt is a file target (only reruns when the committed encrypted state
 # is newer than the local plaintext copy). Encrypt stays a plain action,

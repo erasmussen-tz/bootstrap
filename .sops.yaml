@@ -6,7 +6,7 @@ creation_rules:
     key_groups:
       - age:
           - *erasmussen
-  - path_regex: terraform\.tfstate\.enc\.json$
+  - path_regex: terraform/terraform\.tfstate$
     key_groups:
       - age:
           - *erasmussen

@@ -29,28 +29,3 @@ module "model" {
   name        = "model"
   description = "Domain modeling"
 }
-
-moved {
-  from = github_repository.bootstrap
-  to   = module.bootstrap.github_repository.this
-}
-
-moved {
-  from = github_repository.notes
-  to   = module.notes.github_repository.this
-}
-
-moved {
-  from = github_repository.glossary
-  to   = module.glossary.github_repository.this
-}
-
-moved {
-  from = github_repository.dotfiles
-  to   = module.dotfiles.github_repository.this
-}
-
-moved {
-  from = github_repository.model
-  to   = module.model.github_repository.this
-}

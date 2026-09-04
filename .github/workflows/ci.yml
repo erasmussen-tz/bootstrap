@@ -21,3 +21,7 @@ jobs:
           name: unstoppablemango
 
       - run: nix flake check
+
+      - run: nix develop -c sops -d secrets.enc.yaml > /dev/null
+        env:
+          SOPS_AGE_KEY: ${{ secrets.SOPS_AGE_KEY }}

@@ -7,7 +7,7 @@ TF_SOURCES := $(wildcard terraform/*.tf) $(wildcard terraform/modules/*/*.tf)
 tf-plan: $(PLAN_FILE)
 
 tf-apply: $(PLAN_FILE)
-	sops exec-env secrets.enc.yaml 'terraform -chdir=terraform apply $(PLAN_NAME)'
+	sops exec-env secrets.enc.yaml 'tofu -chdir=terraform apply $(PLAN_NAME)'
 	rm -f $(PLAN_FILE)
 	$(MAKE) tf-encrypt
 
@@ -17,7 +17,7 @@ tf-apply: $(PLAN_FILE)
 # applied is what was reviewed. Consumed (deleted) after a successful apply,
 # so the next tf-plan/tf-apply regenerates a fresh one.
 $(PLAN_FILE): terraform/.terraform $(TF_SOURCES) $(if $(wildcard $(STATE_ENC)),$(STATE_PLAIN))
-	sops exec-env secrets.enc.yaml 'terraform -chdir=terraform plan -out=$(PLAN_NAME)'
+	sops exec-env secrets.enc.yaml 'tofu -chdir=terraform plan -out=$(PLAN_NAME)'
 
 # Decrypt is a file target (only reruns when the committed encrypted state
 # is newer than the local plaintext copy). Encrypt stays a plain action,
@@ -33,7 +33,7 @@ tf-encrypt:
 # this checkout (unlike the committed .terraform.lock.hcl, which doesn't
 # change on a fresh clone).
 terraform/.terraform: terraform/versions.tf
-	cd terraform && terraform init
+	cd terraform && tofu init
 
 tf-init: terraform/.terraform
 

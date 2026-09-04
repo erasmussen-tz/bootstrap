@@ -28,9 +28,13 @@ used instead and stored directly.
 
 ### Day to day
 
+This repo runs on [OpenTofu](https://opentofu.org) (`tofu`), not Terraform, so it stays MPL-licensed rather than
+BSL. A `terraform` command is also on `$PATH` in the devShell purely as a compatibility alias that execs `tofu`,
+for muscle memory or scripts that still type `terraform` — it isn't HashiCorp's Terraform.
+
 - `make tf-init` — once, or after adding providers.
-- `make tf-plan` / `make tf-apply` — decrypts state, runs terraform with `GITHUB_TOKEN` injected from
+- `make tf-plan` / `make tf-apply` — decrypts state, runs `tofu` with `GITHUB_TOKEN` injected from
   `secrets.enc.yaml`, re-encrypts state afterward (`tf-apply` only; run `make tf-encrypt` by hand after a plan
-  that changed nothing on disk but you still want re-encrypted, or after manually running `terraform` commands).
+  that changed nothing on disk but you still want re-encrypted, or after manually running `tofu` commands).
 - Commit `terraform.tfstate.enc.json` and `secrets.enc.yaml` after they change. Plaintext `terraform/terraform.tfstate`
   is gitignored and only ever exists locally, transiently.

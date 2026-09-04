@@ -25,17 +25,17 @@
       perSystem =
         { system, pkgs, ... }:
         let
-          # terraform and 1password-cli are unfree-licensed; allow them
-          # specifically rather than allowing unfree packages wholesale.
+          # 1password-cli is unfree-licensed; allow it specifically rather
+          # than allowing unfree packages wholesale.
           unfreePkgs = import inputs.nixpkgs {
             inherit system;
-            config.allowUnfreePredicate =
-              pkg:
-              builtins.elem (pkg.pname or "") [
-                "terraform"
-                "1password-cli"
-              ];
+            config.allowUnfreePredicate = pkg: builtins.elem (pkg.pname or "") [ "1password-cli" ];
           };
+
+          # `terraform` in $PATH execs opentofu, so muscle memory and any
+          # script still typing `terraform` keeps working, but tofu is what
+          # actually runs.
+          terraformAlias = pkgs.writeShellScriptBin "terraform" ''exec tofu "$@"'';
         in
         {
           devShells.default = pkgs.mkShellNoCC {
@@ -46,11 +46,10 @@
                 sops
                 age
                 ssh-to-age
+                opentofu
               ])
-              ++ (with unfreePkgs; [
-                terraform
-                _1password-cli
-              ]);
+              ++ [ terraformAlias ]
+              ++ (with unfreePkgs; [ _1password-cli ]);
           };
 
           treefmt.programs = {

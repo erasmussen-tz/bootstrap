@@ -7,5 +7,5 @@ output "ssh_clone_url" {
 }
 
 output "default_branch" {
-  value = github_repository.this.default_branch
+  value = github_branch_default.this.branch
 }

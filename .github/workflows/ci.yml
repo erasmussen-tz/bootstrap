@@ -22,6 +22,6 @@ jobs:
 
       - run: nix flake check
 
-      - run: nix develop -c sops -d secrets.enc.yaml > /dev/null
+      - run: nix develop -c make tf-plan
         env:
           SOPS_AGE_KEY: ${{ secrets.SOPS_AGE_KEY }}

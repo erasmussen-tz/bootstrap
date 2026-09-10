@@ -29,3 +29,9 @@ module "model" {
   name        = "model"
   description = "Domain modeling"
 }
+
+module "tzctl" {
+  source      = "./modules/repo"
+  name        = "tzctl"
+  description = "Utility CLI"
+}

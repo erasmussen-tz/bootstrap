@@ -24,5 +24,9 @@ output "repos" {
       ssh_clone_url  = module.tzctl.ssh_clone_url
       default_branch = module.tzctl.default_branch
     }
+    home-modules = {
+      ssh_clone_url  = module.home-modules.ssh_clone_url
+      default_branch = module.home-modules.default_branch
+    }
   }
 }

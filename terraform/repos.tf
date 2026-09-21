@@ -35,3 +35,10 @@ module "tzctl" {
   name        = "tzctl"
   description = "Utility CLI"
 }
+
+module "home-modules" {
+  source      = "./modules/repo"
+  name        = "home-modules"
+  description = "Shared home-manager modules for org-level config"
+  visibility  = "public"
+}

@@ -28,5 +28,13 @@ output "repos" {
       ssh_clone_url  = module.home-modules.ssh_clone_url
       default_branch = module.home-modules.default_branch
     }
+    forge = {
+      ssh_clone_url  = module.forge.ssh_clone_url
+      default_branch = module.forge.default_branch
+    }
+    forge-state = {
+      ssh_clone_url  = module.forge-state.ssh_clone_url
+      default_branch = module.forge-state.default_branch
+    }
   }
 }

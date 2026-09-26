@@ -2,6 +2,7 @@ resource "github_repository" "this" {
   name        = var.name
   description = var.description
   visibility  = var.visibility
+  auto_init   = var.auto_init
 
   has_issues   = true
   has_projects = var.has_projects

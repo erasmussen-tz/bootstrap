@@ -5,44 +5,6 @@ module "bootstrap" {
   visibility  = "public"
 }
 
-module "notes" {
-  source      = "./modules/repo"
-  name        = "notes"
-  description = "Notes"
-}
-
-module "glossary" {
-  source      = "./modules/repo"
-  name        = "glossary"
-  description = "Glossary"
-}
-
-module "dotfiles" {
-  source       = "./modules/repo"
-  name         = "dotfiles"
-  description  = "Nix home configuration"
-  has_projects = true
-}
-
-module "model" {
-  source      = "./modules/repo"
-  name        = "model"
-  description = "Domain modeling"
-}
-
-module "tzctl" {
-  source      = "./modules/repo"
-  name        = "tzctl"
-  description = "Utility CLI"
-}
-
-module "home-modules" {
-  source      = "./modules/repo"
-  name        = "home-modules"
-  description = "Shared home-manager modules for org-level config"
-  visibility  = "public"
-}
-
 module "forge" {
   source      = "./modules/repo"
   name        = "forge"

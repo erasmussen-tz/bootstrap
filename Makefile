@@ -41,6 +41,7 @@ repos.json: $(STATE_PLAIN)
 # change on a fresh clone).
 terraform/.terraform: terraform/versions.tf
 	cd terraform && tofu init
+	touch $@
 
 tf-init: terraform/.terraform
 
